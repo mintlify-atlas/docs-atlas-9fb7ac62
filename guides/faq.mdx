@@ -1,0 +1,44 @@
+---
+title: FAQ
+description: Frequently asked questions about claude-token-efficient.
+---
+
+<AccordionGroup>
+  <Accordion title="Does it work with models other than Claude?">
+    The rules are model-agnostic and should work on any model that reads context. Benchmarks were run on Claude only. Results on local models like llama.cpp, Mistral, or others are untested. Community results are welcome — open an issue if you have data.
+  </Accordion>
+
+  <Accordion title="Will CLAUDE.md fight my explicit instructions?">
+    No. User instructions always override the file. If you ask for verbose output or a detailed explanation, Claude will follow your instruction. The file never fights you.
+  </Accordion>
+
+  <Accordion title="Does it work with Claude Code specifically?">
+    Yes. Claude Code reads `CLAUDE.md` automatically from the project root. Drop the file in and the behavior changes immediately — no configuration or code changes required.
+  </Accordion>
+
+  <Accordion title="How small should I keep CLAUDE.md?">
+    Keep it short. Every line adds input tokens on every message. Independent benchmarks found that 7–12 line configs outperform longer rule sets on total tokens. The real wins come from targeting specific failure modes you have actually hit, not from writing comprehensive generic rules.
+  </Accordion>
+
+  <Accordion title="Can I combine the base file with a profile?">
+    Yes. Pick the base `CLAUDE.md` plus a profile, or use the base alone. For general preferences like tone and formatting, use your global `~/.claude/CLAUDE.md`. For project-specific rules, use a project-level `CLAUDE.md` in your project root. The files compose — Claude reads all of them at once.
+  </Accordion>
+
+  <Accordion title="What's the net token impact at low usage?">
+    At low usage it costs more than it saves. The file loads as input tokens on every message. Net savings only occur when output volume is high enough to offset that persistent input cost. This setup works best for automation pipelines, agent loops, and code generation at scale — not for occasional one-off queries.
+  </Accordion>
+
+  <Accordion title="How do the versioned configs (v5/v6/v8) differ from the profiles?">
+    Profiles (`CLAUDE.coding.md`, `CLAUDE.agents.md`, etc.) are single-file specializations targeting a specific use case.
+
+    Versioned configs (`J-drona23-v5`, `K-drona23-v6`, `M-drona23-v8`) are multi-file structured sets with separate `rules/`, `agents/`, and `reference/` directories. They offer more fine-grained control and are designed for specific benchmark scenarios:
+
+    | Version | Strategy | Tool Budget |
+    |---------|----------|-------------|
+    | v5 | Multi-file structured | 50 calls |
+    | v6 | One-shot execution | 30 calls |
+    | v8 | Ultra-lean minimum-turn | 20 calls |
+
+    Start with a profile if you need a single file. Move to a versioned config if you need structured multi-step workflows or maximum cost efficiency at scale.
+  </Accordion>
+</AccordionGroup>

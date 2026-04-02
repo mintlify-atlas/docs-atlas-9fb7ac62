@@ -1,0 +1,150 @@
+---
+title: 'J-drona23-v5 — Multi-file structured'
+description: 'A structured configuration with dedicated subdirectories for workflow rules, agent definitions, and reference patterns.'
+---
+
+`J-drona23-v5` is the most fully-featured versioned config. It organizes rules, agent definitions, and reference patterns across separate files and directories, making it well-suited for complex projects that require detailed, explicit workflow control.
+
+## At a glance
+
+| Property | Value |
+|----------|-------|
+| Strategy | Multi-file structured |
+| Tool budget | Up to 50 tool calls (agent wraps at 40) |
+| Best for | Complex projects needing detailed workflow rules and agent definitions |
+
+## File structure
+
+The v5 directory ships with the following layout:
+
+```
+J-drona23-v5/
+├── CLAUDE.md          # Entry point — instructs Claude to read .claude/ before starting
+├── agents/
+│   └── builder.md     # Agent role definitions and budget
+├── rules/
+│   └── workflow.md    # Workflow rules
+└── reference/
+    └── patterns.md    # Known good and bad patterns
+```
+
+When you copy this directory into your project, Claude reads `CLAUDE.md` first. That entry point instructs Claude to load the rule and agent definitions from `.claude/` before beginning any work.
+
+## CLAUDE.md entry point
+
+```markdown
+# Project
+
+A coding project. Read the rules and agent definitions in .claude/ before starting work.
+```
+
+## Agent definition (`agents/builder.md`)
+
+```markdown
+# Builder Agent
+
+You are a builder agent. Your job is to write working code that meets the requirements.
+
+## Budget
+- Maximum 50 tool calls
+- If you reach 40 calls, wrap up immediately
+
+## Protocol
+1. Read all project files
+2. Plan your approach (think, don't write yet)
+3. Write the code
+4. Run and test it
+5. Fix any issues
+6. Verify final output
+```
+
+## Workflow rules (`rules/workflow.md`)
+
+```markdown
+# Workflow Rules
+
+## Before writing code
+- MUST read all existing files in the project first
+- MUST understand the full requirements before writing any code
+- NEVER start coding before reading the input data or schema
+
+## While writing code
+- MUST test code after writing it (run the script/server)
+- NEVER leave code untested
+- MUST fix errors before moving on - do not skip failures
+- NEVER hardcode paths that should be relative
+
+## Before declaring done
+- MUST verify output matches expected format
+- MUST run the code one final time to confirm it works
+- NEVER declare done without running the code at least once
+```
+
+## Reference patterns (`reference/patterns.md`)
+
+```markdown
+# Known Patterns
+
+## Anti-patterns to avoid
+- Writing code before reading existing files
+- Hardcoding absolute paths
+- Not testing before declaring done
+- Re-reading files unnecessarily
+- Over-engineering simple solutions
+
+## Good patterns
+- Read first, then write
+- Test after every significant change
+- Use relative paths
+- Keep solutions minimal
+- Handle edge cases in data (nulls, empty strings, type mismatches)
+
+## WebSocket patterns
+- Track clients manually with a Set - do not rely on pub/sub channels for broadcast
+- Send confirmation to sender first, then broadcast to others
+- Use setTimeout(0) to give test listeners time to register before broadcast fires
+```
+
+## How to use it
+
+<Steps>
+  <Step title="Copy the directory into your project">
+    Copy the entire `J-drona23-v5/` directory into your project root, renaming it to `.claude/`:
+
+    ```bash
+    cp -r claude-token-efficient/profiles/J-drona23-v5/ your-project/.claude/
+    cp claude-token-efficient/profiles/J-drona23-v5/CLAUDE.md your-project/CLAUDE.md
+    ```
+  </Step>
+  <Step title="Verify the structure">
+    Your project should now look like:
+
+    ```
+    your-project/
+    ├── CLAUDE.md
+    └── .claude/
+        ├── agents/
+        │   └── builder.md
+        ├── rules/
+        │   └── workflow.md
+        └── reference/
+            └── patterns.md
+    ```
+  </Step>
+  <Step title="Start Claude Code">
+    Claude Code picks up `CLAUDE.md` automatically. It will read the agents and rules subdirectories before starting work on your task.
+  </Step>
+</Steps>
+
+<Tip>
+You can extend the v5 structure by adding more files to `agents/`, `rules/`, or `reference/`. Claude reads everything in those directories, so your additions are picked up without any changes to `CLAUDE.md`.
+</Tip>
+
+## When to use v5
+
+- Your project involves multiple distinct agent roles (e.g., planner, builder, reviewer).
+- You have complex multi-step workflows that benefit from explicit rule files.
+- You want a clear separation between workflow rules, agent definitions, and reference material.
+- You are comfortable with a 50-call tool budget.
+
+If your tasks are simpler or you need a stricter cost ceiling, consider [v6](/versioned/v6-one-shot) for single-pass execution or [v8](/versioned/v8-ultra-lean) for a 20-call budget.

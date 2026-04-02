@@ -1,0 +1,79 @@
+---
+title: 'Coding profile'
+description: 'Token-efficient rules for dev projects, code review, debugging, and refactoring.'
+---
+
+The coding profile is tuned for day-to-day software development work. It keeps Claude focused on code rather than commentary: return the fix, show the code, stop. No unsolicited suggestions, no praise, no abstractions you didn't ask for.
+
+**Best for:** dev projects, code review, debugging, refactoring
+
+**Extends:** universal `CLAUDE.md` rules
+
+## Rules by category
+
+<AccordionGroup>
+  <Accordion title="Output">
+    ```text
+    - Return code first. Explanation after, only if non-obvious.
+    - No inline prose. Use comments sparingly - only where logic is unclear.
+    - No boilerplate unless explicitly requested.
+    ```
+  </Accordion>
+  <Accordion title="Code rules">
+    ```text
+    - Simplest working solution. No over-engineering.
+    - No abstractions for single-use operations.
+    - No speculative features or "you might also want..."
+    - Read the file before modifying it. Never edit blind.
+    - No docstrings or type annotations on code not being changed.
+    - No error handling for scenarios that cannot happen.
+    - Three similar lines is better than a premature abstraction.
+    ```
+  </Accordion>
+  <Accordion title="Review rules">
+    ```text
+    - State the bug. Show the fix. Stop.
+    - No suggestions beyond the scope of the review.
+    - No compliments on the code before or after the review.
+    ```
+  </Accordion>
+  <Accordion title="Debugging rules">
+    ```text
+    - Never speculate about a bug without reading the relevant code first.
+    - State what you found, where, and the fix. One pass.
+    - If cause is unclear: say so. Do not guess.
+    ```
+  </Accordion>
+  <Accordion title="Formatting">
+    ```text
+    - No em dashes, smart quotes, or decorative Unicode symbols.
+    - Plain hyphens and straight quotes only.
+    - Natural language characters (accented letters, CJK, etc.) are fine when the content requires them.
+    - Code output must be copy-paste safe.
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## How to activate
+
+<Steps>
+  <Step title="Copy the profile to your project root">
+    ```bash
+    cp claude-token-efficient/profiles/CLAUDE.coding.md your-project/CLAUDE.md
+    ```
+  </Step>
+  <Step title="Start working">
+    Claude Code reads `CLAUDE.md` automatically. The rules take effect on the next message.
+  </Step>
+</Steps>
+
+## When this profile helps most
+
+- **Code review:** Claude states the bug, shows the fix, and stops — no compliments, no tangential suggestions.
+- **Debugging:** Claude reads the relevant code before speculating. If the cause is unclear, it says so instead of guessing.
+- **Refactoring:** No premature abstractions. Three similar lines stay as three similar lines until abstraction is clearly warranted.
+- **Code generation:** No boilerplate, no docstrings on untouched code, no error handling for impossible cases.
+
+<Tip>
+  The rule "three similar lines is better than a premature abstraction" is one of the highest-impact rules in this profile. It prevents Claude from introducing unnecessary indirection when a direct repetition is clearer and cheaper to maintain.
+</Tip>

@@ -1,0 +1,101 @@
+---
+title: 'M-drona23-v8 — Ultra-lean minimum-turn'
+description: 'A strict 20-call configuration for cost-sensitive pipelines. Two files, seven lines, 17.4% cheaper than the previous benchmark leader.'
+---
+
+`M-drona23-v8` is the most cost-efficient versioned config. It uses only two files — `CLAUDE.md` and `rules/workflow.md` — with seven lines of rules total. The tool budget is capped at 20 calls, forcing Claude to plan carefully, write complete solutions in a single pass, and stop the moment tests pass.
+
+## At a glance
+
+| Property | Value |
+|----------|-------|
+| Strategy | Ultra-lean minimum-turn |
+| Tool budget | 20 tool calls (strict) |
+| Best for | Cost-sensitive pipelines where every tool call counts |
+
+## File structure
+
+```
+M-drona23-v8/
+├── CLAUDE.md        # Entry point (1 line)
+└── rules/
+    └── workflow.md  # All workflow rules (6 rules)
+```
+
+This is intentionally minimal. There are no `agents/` or `reference/` directories — those would add input token overhead on every turn without returning value in a minimum-turn strategy.
+
+## CLAUDE.md entry point
+
+```markdown
+A coding project. Read .claude/rules/ before starting.
+```
+
+## Workflow rules
+
+The full content of `rules/workflow.md`:
+
+```markdown
+# Rules
+
+You have a strict budget of 20 tool calls. Plan carefully.
+
+1. Read ALL files including test file first. The test defines what passes.
+2. Write the COMPLETE solution in a single file write. Not incrementally.
+3. Run tests once. If pass: stop immediately. If fail: read error, fix once, retest.
+4. Never iterate more than once on the same failure. Rethink if stuck.
+5. Never refactor, improve, or polish passing code.
+6. For WebSocket: use a Set to track clients manually. Send to sender first,
+   then broadcast to others via setTimeout(0). Never use pub/sub channels.
+```
+
+<Warning>
+The 20-call budget is a hard constraint embedded in the rules. Tasks that require significant exploration, multi-file refactoring, or iterative debugging are likely to hit the ceiling. Evaluate your task complexity before choosing v8.
+</Warning>
+
+## How to use it
+
+<Steps>
+  <Step title="Copy the directory into your project">
+    ```bash
+    cp -r claude-token-efficient/profiles/M-drona23-v8/ your-project/.claude/
+    cp claude-token-efficient/profiles/M-drona23-v8/CLAUDE.md your-project/CLAUDE.md
+    ```
+  </Step>
+  <Step title="Verify the structure">
+    ```
+    your-project/
+    ├── CLAUDE.md
+    └── .claude/
+        └── rules/
+            └── workflow.md
+    ```
+  </Step>
+  <Step title="Start Claude Code">
+    Claude Code reads `CLAUDE.md` automatically and loads the workflow rules before beginning.
+  </Step>
+</Steps>
+
+## Benchmark results
+
+v8 was run head-to-head against C-structured (the previous benchmark leader) on an independent harness across three coding challenges. All configs passed all tests; comparison is cost-to-green only.
+
+| Challenge | M-drona23-v8 | C-structured | Winner |
+|-----------|-------------|-------------|--------|
+| CSV Reporter | $0.244 | $0.282 | v8 |
+| SQLite Windows | $0.406 | $0.376 | C-structured |
+| WebSocket | $0.285 | $0.473 | v8 |
+| **Total** | **$0.935** | **$1.131** | **v8 (-17.4%)** |
+
+The largest win is on the WebSocket challenge, where the explicit pattern rule in `workflow.md` — use a `Set` to track clients, `setTimeout(0)` for broadcast, no pub/sub — prevents expensive debugging loops that consume tool calls.
+
+<Info>
+The SQLite Windows challenge was the one case where C-structured was cheaper. v8's strict single-pass approach can be a disadvantage when a task genuinely requires exploratory iteration.
+</Info>
+
+## When to use v8
+
+- Cost per run is a primary constraint.
+- Your tasks have clear, testable completion conditions and do not require extensive exploration.
+- You can accept that some complex tasks may need a different config if they exceed the 20-call budget.
+
+For tasks that need more room to iterate, see [v5](/versioned/v5-structured) (multi-step structured) or [v6](/versioned/v6-one-shot) (one-shot with a 50-call budget).

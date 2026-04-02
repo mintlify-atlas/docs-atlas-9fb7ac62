@@ -1,0 +1,50 @@
+---
+title: Introduction
+description: A single CLAUDE.md file that drops into your project root to reduce Claude verbosity, sycophancy, and token waste.
+---
+
+## What it is
+
+`claude-token-efficient` is a single `CLAUDE.md` file you drop into your project root. Claude Code reads `CLAUDE.md` automatically on every turn — no configuration, no code changes, no setup. Behavior changes immediately.
+
+```
+your-project/
+└── CLAUDE.md    ← one file, zero setup, no code changes
+```
+
+## The problem
+
+Every word Claude generates costs tokens. By default, Claude adds a significant amount of output that carries no signal:
+
+- Opens every response with "Sure!", "Great question!", "Absolutely!"
+- Ends with "I hope this helps! Let me know if you need anything!"
+- Uses em dashes, smart quotes, and Unicode characters that break parsers
+- Restates your question before answering it
+- Adds unsolicited suggestions beyond what you asked
+- Over-engineers code with abstractions you never requested
+- Agrees with incorrect statements ("You're absolutely right!")
+
+**All of this wastes tokens. None of it adds value.**
+
+## How it works
+
+Claude Code automatically reads any `CLAUDE.md` file it finds in your project root (and parent directories, including `~/.claude/CLAUDE.md` for global rules). The file instructs Claude how to behave for the duration of the session. No API changes or tooling required.
+
+## What it fixes
+
+| # | Problem | Fix |
+|---|---------|-----|
+| 1 | Starts coding without context | Think first; read files before writing |
+| 2 | Verbose responses | Keep output concise |
+| 3 | Rewrites large files unnecessarily | Prefer targeted edits |
+| 4 | Re-reading the same files | Read each file once unless it changed |
+| 5 | Declaring done without validation | Run tests before finishing |
+| 6 | Sycophantic chatter | No flattering preamble/closing fluff |
+| 7 | Over-engineered solutions | Favor simple direct fixes |
+| 8 | Prompt conflict confusion | User instructions always override |
+
+## The override rule
+
+<Note>
+User instructions always win. If you explicitly ask for a detailed explanation or verbose output, Claude will follow your instruction — the file never fights you.
+</Note>

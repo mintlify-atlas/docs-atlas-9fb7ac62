@@ -1,80 +1,120 @@
 ---
-title: "Quickstart"
-description: "Start building awesome documentation in minutes"
+title: Quickstart
+description: Get claude-token-efficient running in your project in under a minute using curl, git clone, or manual copy.
 ---
 
-## Get started in three steps
+## Installation
 
-Get your documentation site running locally and make your first customization.
+Pick the method that fits your workflow. All three result in a `CLAUDE.md` file in your project root.
 
-### Step 1: Set up your local environment
+<Tabs>
+  <Tab title="Universal">
+    The fastest way to get started. Run this from your project root:
 
-<AccordionGroup>
-  <Accordion icon="copy" title="Clone your docs locally">
-    During the onboarding process, you created a GitHub repository with your docs content if you didn't already have one. You can find a link to this repository in your [dashboard](https://dashboard.mintlify.com).
-    
-    To clone the repository locally so that you can make and preview changes to your docs, follow the [Cloning a repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) guide in the GitHub docs.
-  </Accordion>
-  <Accordion icon="rectangle-terminal" title="Start the preview server">
-    1. Install the Mintlify CLI: `npm i -g mint`
-    2. Navigate to your docs directory and run: `mint dev`
-    3. Open `http://localhost:3000` to see your docs live!
-    
-    <Tip>Your preview updates automatically as you edit files.</Tip>
-  </Accordion>
-</AccordionGroup>
+    <Steps>
+      <Step title="Navigate to your project root">
+        ```bash
+        cd your-project/
+        ```
+      </Step>
+      <Step title="Download CLAUDE.md">
+        ```bash
+        curl -o CLAUDE.md https://raw.githubusercontent.com/drona23/claude-token-efficient/main/CLAUDE.md
+        ```
+      </Step>
+      <Step title="Start Claude Code">
+        Open Claude Code in your project. The file is picked up automatically — no restart or configuration needed.
+      </Step>
+    </Steps>
+  </Tab>
+  <Tab title="Clone">
+    Use this option if you want to browse and pick a specific profile for your project type.
 
-### Step 2: Deploy your changes
+    <Steps>
+      <Step title="Clone the repository">
+        ```bash
+        git clone https://github.com/drona23/claude-token-efficient
+        ```
+      </Step>
+      <Step title="Pick a profile">
+        Choose the profile that matches your workflow:
 
-<AccordionGroup>
-  <Accordion icon="github" title="Install our GitHub app">
-    Install the Mintlify GitHub app from your [dashboard](https://dashboard.mintlify.com/settings/organization/github-app).
-    
-    Our GitHub app automatically deploys your changes to your docs site, so you don't need to manage deployments yourself.
-</Accordion>
-<Accordion icon="palette" title="Update your site name and colors">
-    For a first change, let's update the name and colors of your docs site.
+        | Profile | Best for |
+        |---------|----------|
+        | `CLAUDE.md` | Universal — works for any project |
+        | `profiles/CLAUDE.benchmark.md` | Token-to-green coding benchmarks |
+        | `profiles/CLAUDE.coding.md` | Dev projects, code review, debugging |
+        | `profiles/CLAUDE.agents.md` | Automation pipelines, multi-agent systems |
+        | `profiles/CLAUDE.analysis.md` | Data analysis, research, reporting |
+      </Step>
+      <Step title="Copy your chosen profile into your project root">
+        ```bash
+        cp claude-token-efficient/profiles/CLAUDE.coding.md your-project/CLAUDE.md
+        ```
 
-    1. Open `docs.json` in your editor.
-    2. Change the `"name"` field to your project name.
-    3. Update the `"colors"` to match your brand.
-    4. Save and see your changes instantly at `http://localhost:3000`.
+        Or copy the base file for the universal default:
 
-    <Tip>Try changing the primary color to see an immediate difference!</Tip>
-  </Accordion>
-</AccordionGroup>
+        ```bash
+        cp claude-token-efficient/CLAUDE.md your-project/CLAUDE.md
+        ```
+      </Step>
+      <Step title="Start Claude Code">
+        Open Claude Code in your project. The file is picked up automatically.
+      </Step>
+    </Steps>
+  </Tab>
+  <Tab title="Manual">
+    Copy the file contents by hand — useful if you want to review or customize before saving.
 
-### Step 3: Go live
+    <Steps>
+      <Step title="Open the source file">
+        Navigate to the repository and open `CLAUDE.md`:
 
-<Accordion icon="rocket" title="Publish your docs">
-  1. Commit and push your changes.
-  2. Your docs will update and be live in moments!
-</Accordion>
+        ```
+        https://github.com/drona23/claude-token-efficient/blob/main/CLAUDE.md
+        ```
+      </Step>
+      <Step title="Copy the contents">
+        Copy the full file contents.
+      </Step>
+      <Step title="Create CLAUDE.md in your project root">
+        Create a new file named `CLAUDE.md` in the root of your project and paste the contents.
 
-## Next steps
+        ```
+        your-project/
+        └── CLAUDE.md
+        ```
+      </Step>
+      <Step title="Start Claude Code">
+        Open Claude Code in your project. The file is picked up automatically.
+      </Step>
+    </Steps>
+  </Tab>
+</Tabs>
 
-Now that you have your docs running, explore these key features:
+## Verify it's working
 
-<CardGroup cols={2}>
+Ask Claude to review a simple piece of code. Compare its response against what you'd normally expect.
 
-<Card title="Write Content" icon="pen-to-square" href="/essentials/markdown">
-  Learn MDX syntax and start writing your documentation.
-</Card>
+**Without CLAUDE.md**, a code review prompt returns something like:
 
-<Card title="Customize style" icon="palette" href="/essentials/settings">
-  Make your docs match your brand perfectly.
-</Card>
+```text
+Great question! I can see you're working with a loop. Let me take a look at that.
+That's a thoughtful piece of code! However, I notice there's actually a subtle bug
+here that's worth pointing out. The condition i <= arr.length should be i < arr.length.
+Using <= means the loop will run one extra iteration...
 
-<Card title="Add code examples" icon="square-code" href="/essentials/code">
-  Include syntax-highlighted code blocks.
-</Card>
+Great catch on reviewing this - it's always good practice to double-check loop
+boundaries! I hope this review was helpful. Feel free to share more code anytime!
+```
 
-<Card title="API documentation" icon="code" href="/api-reference/introduction">
-  Auto-generate API docs from OpenAPI specs.
-</Card>
+**With CLAUDE.md**, the same prompt returns:
 
-</CardGroup>
+```text
+Bug: <= causes an off-by-one error. On the final iteration arr[arr.length] is undefined.
 
-<Note>
-  **Need help?** See our [full documentation](https://mintlify.com/docs) or join our [community](https://mintlify.com/community).
-</Note>
+Fix:
+for (let i = 0; i < arr.length; i++)
+```
+
+If your responses are direct and free of preamble and closing fluff, the file is active and working.

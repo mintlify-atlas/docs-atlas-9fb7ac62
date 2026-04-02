@@ -1,0 +1,123 @@
+---
+title: 'K-drona23-v6 — One-shot execution'
+description: 'A configuration built for tasks that should complete in a single pass with no iteration or polishing after tests pass.'
+---
+
+`K-drona23-v6` shares the same directory structure as v5 — rules, agents, and reference subdirectories — but its behavioral intent is different: tasks complete in one pass. Once tests pass, Claude stops. No refactoring, no polishing, no follow-up iterations.
+
+## At a glance
+
+| Property | Value |
+|----------|-------|
+| Strategy | One-shot execution |
+| Tool budget | Up to 30 tool calls (agent wraps at 25) |
+| Best for | Tasks that should complete in a single pass with minimal iteration |
+
+## File structure
+
+```
+K-drona23-v6/
+├── CLAUDE.md          # Entry point
+├── agents/
+│   └── builder.md     # Agent role definitions
+├── rules/
+│   └── workflow.md    # One-shot workflow rules
+└── reference/
+    └── patterns.md    # Reference patterns (shared with v5)
+```
+
+## CLAUDE.md entry point
+
+```markdown
+A coding project. Read .claude/agents/ and .claude/rules/ before starting.
+```
+
+## Agent definition (`agents/builder.md`)
+
+```markdown
+# Builder Agent
+
+Write working code that passes all tests. Minimize tool calls.
+
+## Budget
+- Maximum 30 tool calls. Wrap up at 25.
+
+## Protocol
+1. Read ALL files including test file. Understand what passes.
+2. Plan the full solution mentally. Do not write partial code.
+3. Write the complete solution in one pass.
+4. Run tests once.
+5. If tests fail: read the error, fix the exact issue, retest. One fix cycle max.
+6. If tests pass: done. Do not refactor or improve passing code.
+
+## Critical
+- Read the test file BEFORE writing any code. The test defines success.
+- Write the complete solution in one file write, not incremental pieces.
+- Never iterate more than twice on the same error. If stuck, rethink the approach entirely.
+```
+
+## Workflow rules (`rules/workflow.md`)
+
+```markdown
+# Workflow
+
+## Before coding
+- MUST read every file including test files and seed data
+- MUST understand what the test asserts before writing anything
+- NEVER start coding before reading all inputs
+
+## While coding
+- Write the complete solution in one pass
+- MUST run tests after writing
+- MUST fix errors before moving on
+- NEVER iterate more than twice on the same error
+
+## Done criteria
+- Tests pass. Stop. Do not improve passing code.
+```
+
+## Key behavioral difference from v5
+
+The defining characteristic of v6 is the **"done means done"** rule: Claude does not polish, refactor, or improve code that is already passing. Once a task reaches green, execution stops. The tool budget per agent is also tighter — 30 calls with a wrap-at-25 signal.
+
+This contrasts with v5, which supports multi-step structured workflows where follow-up passes and agent handoffs are expected.
+
+<Note>
+"Done means done" applies to passing code. If tests fail, Claude will still iterate within the budget to reach a passing state. The one-fix-cycle rule limits how many times Claude can retry the same failure.
+</Note>
+
+## How to use it
+
+<Steps>
+  <Step title="Copy the directory into your project">
+    ```bash
+    cp -r claude-token-efficient/profiles/K-drona23-v6/ your-project/.claude/
+    cp claude-token-efficient/profiles/K-drona23-v6/CLAUDE.md your-project/CLAUDE.md
+    ```
+  </Step>
+  <Step title="Verify the structure">
+    ```
+    your-project/
+    ├── CLAUDE.md
+    └── .claude/
+        ├── agents/
+        │   └── builder.md
+        ├── rules/
+        │   └── workflow.md
+        └── reference/
+            └── patterns.md
+    ```
+  </Step>
+  <Step title="Start Claude Code">
+    Claude Code reads `CLAUDE.md` automatically and loads the agents and rules before beginning.
+  </Step>
+</Steps>
+
+## When to use v6
+
+- Your tasks have a clear, verifiable completion condition (e.g., all tests pass).
+- You want to prevent Claude from spending tool calls on unsolicited improvements after the task is done.
+- Your workflow is largely single-pass — you do not need multi-agent handoffs or iterative refinement built into the config.
+- A 30-call budget is appropriate for your task complexity.
+
+For a stricter cost ceiling with fewer files, see [v8](/versioned/v8-ultra-lean). For multi-agent structured workflows, see [v5](/versioned/v5-structured).

@@ -1,0 +1,104 @@
+---
+title: Composing Rules
+description: How to stack multiple CLAUDE.md files across global, project, and subdirectory levels to keep rules focused and token-efficient.
+---
+
+Claude reads multiple `CLAUDE.md` files at the same time. You can place them at three different levels, and Claude will load all of them on every turn. This lets you split rules by scope instead of cramming everything into one file.
+
+<Note>
+Every line in every CLAUDE.md file adds input tokens on every message. Keep each file short. The goal is targeted rules, not exhaustive ones.
+</Note>
+
+## The Three Levels
+
+<Steps>
+  <Step title="Global: ~/.claude/CLAUDE.md">
+    Your personal preferences that apply across every project. This is the right place for universal formatting rules, tone preferences, and encoding constraints you always want.
+
+    Examples of what belongs here:
+    - No em dashes or smart quotes
+    - No sycophantic openers or closing fluff
+    - Plain hyphens and straight quotes only
+
+    ```
+    ~/.claude/
+    └── CLAUDE.md    ← tone, format, ASCII rules
+    ```
+  </Step>
+
+  <Step title="Project-level: your-project/CLAUDE.md">
+    Rules that are specific to one project. These sit in your project root and are read automatically by Claude Code.
+
+    Examples of what belongs here:
+    - "Never modify `/config` without confirmation"
+    - Language or framework conventions for this codebase
+    - Project-specific error handling expectations
+
+    ```
+    your-project/
+    ├── CLAUDE.md    ← project-specific constraints
+    └── src/
+    ```
+  </Step>
+
+  <Step title="Subdirectory: your-project/subdir/CLAUDE.md">
+    Rules that only apply inside a particular directory. Use this for task-specific behavior — a data pipeline subdirectory might need stricter output format rules than the rest of the project.
+
+    Examples of what belongs here:
+    - "All output must be valid JSON"
+    - "Never guess field names — return null if unknown"
+    - Pipeline-specific agent behavior rules
+
+    ```
+    your-project/
+    ├── CLAUDE.md           ← project-level rules
+    └── pipeline/
+        ├── CLAUDE.md       ← task-specific rules
+        └── runner.py
+    ```
+  </Step>
+</Steps>
+
+## Why This Matters
+
+Splitting rules across levels keeps each file short and keeps rules close to where they apply. A single monolithic `CLAUDE.md` that tries to cover every scenario will grow until it costs more in input tokens than it saves in output tokens.
+
+The composition model lets you:
+
+- Update global preferences once without touching any project
+- Add project rules without polluting your global config
+- Scope aggressive rules (like strict JSON-only output) to only the directories that need them
+
+## Scope Rules to Actual Failure Modes
+
+Generic rules like "be concise" help, but the real wins come from targeting specific failures you have actually hit. If Claude silently swallows errors in your pipeline, add a rule like:
+
+```
+When a step fails, stop immediately and report the full error
+with traceback before attempting any fix.
+```
+
+Specific beats generic every time. A rule that addresses something that has actually gone wrong in your workflow will save more tokens than a broad instruction that Claude might already be following.
+
+## Example: Full Three-Level Layout
+
+```
+~/.claude/
+└── CLAUDE.md
+    # No em dashes, smart quotes, or Unicode symbols
+    # No sycophantic openers or closing fluff
+    # User instructions always override this file
+
+your-project/
+├── CLAUDE.md
+│   # Never modify /config without confirmation
+│   # Read each file once unless it changed
+│   # Run tests before declaring done
+└── pipeline/
+    └── CLAUDE.md
+        # Structured output only: JSON, bullets, tables
+        # If a step fails: state what failed and stop
+        # Never invent file paths or field names
+```
+
+Each file stays short. Rules live where they are relevant. The input overhead is distributed and minimal at each level.

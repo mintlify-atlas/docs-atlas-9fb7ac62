@@ -1,0 +1,48 @@
+---
+title: When to use
+description: Understand where claude-token-efficient delivers real savings and where the overhead outweighs the benefit.
+---
+
+## The honest trade-off
+
+The `CLAUDE.md` file itself consumes input tokens on every message. The savings come from reduced output tokens. The net is only positive when output volume is high enough to offset the persistent input cost. At low usage it costs more than it saves.
+
+## Good fit
+
+<Check>
+  **Automation pipelines with high output volume** — resume bots, agent loops, and code generation pipelines where Claude's verbosity compounds across hundreds of calls.
+</Check>
+
+<Check>
+  **Repeated structured tasks** — workflows where Claude's default verbosity runs on the same type of prompt many times and the reduction accumulates.
+</Check>
+
+<Check>
+  **Teams needing consistent output** — when multiple people or systems need parseable, predictable output format across sessions.
+</Check>
+
+## Not worth it
+
+<Warning>
+  **Single short queries** — the file loads into context on every message, so on low-output exchanges it is a net token increase.
+</Warning>
+
+<Warning>
+  **Casual one-off use** — the overhead doesn't pay off at low volume.
+</Warning>
+
+<Warning>
+  **Fixing deep failure modes** — hallucinated implementations or architectural drift require hooks, gates, and mechanical enforcement. Prompt-based rules won't solve those reliably.
+</Warning>
+
+<Warning>
+  **Pipelines using multiple fresh sessions per task** — fresh sessions don't carry the CLAUDE.md overhead benefit the same way persistent sessions do.
+</Warning>
+
+<Warning>
+  **Parser reliability at scale** — if you need guaranteed parseable output, use structured outputs (JSON mode, tool use with schemas) built into the API. That is a more robust solution than prompt-based formatting rules.
+</Warning>
+
+<Warning>
+  **Exploratory or architectural work** — when debate, pushback, and alternatives are the point. The override rule lets you ask for that any time, but if that's your primary workflow this file will feel restrictive.
+</Warning>

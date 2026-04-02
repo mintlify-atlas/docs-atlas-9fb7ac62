@@ -1,0 +1,86 @@
+---
+title: 'Analysis profile'
+description: 'Token-efficient rules for data analysis, research, financial analysis, and reporting.'
+---
+
+The analysis profile is built for work where accuracy is non-negotiable. Numbers must be sourced. Inferences must be labeled. Missing data must be stated, not silently estimated. The report format enforces a consistent structure: summary first, supporting data second, caveats last.
+
+**Best for:** data analysis, research, financial analysis, reporting
+
+**Extends:** universal `CLAUDE.md` rules
+
+## Rules by category
+
+<AccordionGroup>
+  <Accordion title="Output">
+    ```text
+    - Lead with the finding. Context and methodology after.
+    - Tables and bullets over prose paragraphs.
+    - Numbers must include units. Never ambiguous values.
+    ```
+  </Accordion>
+  <Accordion title="Accuracy rules">
+    ```text
+    - Never state a number without a source or derivation.
+    - If data is missing: say so. Do not estimate silently.
+    - If confidence is low: state it explicitly with a reason.
+    - Do not round aggressively. Preserve meaningful precision.
+    ```
+  </Accordion>
+  <Accordion title="Hallucination prevention">
+    ```text
+    - Never fabricate data points, statistics, or citations.
+    - If a claim cannot be grounded in provided data: do not make it.
+    - Distinguish clearly between what the data shows and what is inferred.
+    - Label inferences explicitly: "Based on the trend..." not stated as fact.
+    ```
+  </Accordion>
+  <Accordion title="Formatting">
+    ```text
+    - No em dashes or smart quotes in reports.
+    - Tables use plain pipe characters.
+    - Natural language characters (accented letters, CJK, etc.) are fine when the content requires them.
+    - Safe for copy-paste into spreadsheets and documents.
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## Report format structure
+
+Every analysis output follows this structure:
+
+<Steps>
+  <Step title="Summary">
+    Three bullets maximum. Lead with the finding.
+  </Step>
+  <Step title="Supporting data">
+    Tables, numbers with units, derivations. No narrative fluff between sections.
+  </Step>
+  <Step title="Caveats and limitations">
+    Missing data, low-confidence areas, assumptions made explicit.
+  </Step>
+</Steps>
+
+<Note>
+  The rule "no narrative fluff between sections" prevents Claude from padding reports with transitional prose that adds length but not information.
+</Note>
+
+## How to activate
+
+<Steps>
+  <Step title="Copy the profile to your project root">
+    ```bash
+    cp claude-token-efficient/profiles/CLAUDE.analysis.md your-project/CLAUDE.md
+    ```
+  </Step>
+  <Step title="Start working">
+    Claude Code reads `CLAUDE.md` automatically. The rules take effect on the next message.
+  </Step>
+</Steps>
+
+## When this profile helps most
+
+- **Financial analysis:** Numbers are always accompanied by units and sources. Aggressive rounding that loses meaningful precision is prevented.
+- **Research reports:** Inferences are labeled explicitly — "Based on the trend..." — rather than stated as established fact.
+- **Data summaries:** The summary-first format means the answer is always at the top, not buried after three paragraphs of context.
+- **Spreadsheet and document output:** Plain pipe tables and no decorative Unicode make the output safe for copy-paste into external tools.

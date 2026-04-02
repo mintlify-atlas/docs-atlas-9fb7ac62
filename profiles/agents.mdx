@@ -1,0 +1,80 @@
+---
+title: 'Agents profile'
+description: 'Token-efficient rules for automation pipelines, multi-agent systems, bots, and scheduled tasks.'
+---
+
+The agents profile is built for non-interactive use: Claude as a component in a pipeline, not a conversational partner. Every rule is aimed at making output machine-consumable, predictable, and free of invented values that would break downstream systems.
+
+**Best for:** automation pipelines, multi-agent systems, bots, scheduled tasks
+
+**Extends:** universal `CLAUDE.md` rules
+
+## Rules by category
+
+<AccordionGroup>
+  <Accordion title="Output">
+    ```text
+    - Structured output only: JSON, bullets, tables.
+    - No prose unless the downstream consumer is a human reader.
+    - Every output must be parseable without post-processing.
+    ```
+  </Accordion>
+  <Accordion title="Agent behavior">
+    ```text
+    - Execute the task. Do not narrate what you are doing.
+    - No status updates like "Now I will..." or "I have completed..."
+    - No asking for confirmation on clearly defined tasks. Use defaults.
+    - If a step fails: state what failed, why, and what was attempted. Stop.
+    ```
+  </Accordion>
+  <Accordion title="Formatting and encoding">
+    ```text
+    - No decorative Unicode: no smart quotes, em dashes, or ellipsis characters.
+    - Natural language characters (accented letters, CJK, etc.) are fine when the content requires them.
+    - All strings must be safe for JSON serialization.
+    ```
+  </Accordion>
+  <Accordion title="Token efficiency">
+    ```text
+    - Pipeline calls compound. Every token saved per call multiplies across runs.
+    - No explanatory text in agent output unless a human will read it.
+    - Return the minimum viable output that satisfies the task spec.
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## Hallucination prevention
+
+<Warning>
+  **Critical for pipelines.** Hallucinated values in agent output — invented file paths, made-up API endpoints, guessed field names — propagate silently through downstream systems. A human reader catches a wrong value; a parser does not.
+
+  ```text
+  - Never invent file paths, API endpoints, function names, or field names.
+  - If a value is unknown: return null or "UNKNOWN". Never guess.
+  - If a file or resource was not read: do not reference its contents.
+  - Downstream systems break on hallucinated values. Accuracy over completeness.
+  ```
+</Warning>
+
+## How to activate
+
+<Steps>
+  <Step title="Copy the profile to your project root">
+    ```bash
+    cp claude-token-efficient/profiles/CLAUDE.agents.md your-project/CLAUDE.md
+    ```
+  </Step>
+  <Step title="Start working">
+    Claude Code reads `CLAUDE.md` automatically. The rules take effect on the next message.
+  </Step>
+</Steps>
+
+## Why hallucination prevention is critical for pipelines
+
+In a conversational workflow, a hallucinated value is visible and correctable. In a pipeline, it is silent. Claude might return a plausible-looking API endpoint that does not exist, and the next stage in the pipeline will call it, fail, or silently produce wrong results.
+
+The agents profile addresses this directly: if a value is unknown, return `null` or `"UNKNOWN"`. Never guess. The rule "accuracy over completeness" means an incomplete-but-correct output is always preferable to a complete-but-wrong one.
+
+<Info>
+  Token efficiency compounds in pipelines. If Claude saves 50 tokens per call and the pipeline runs 1,000 calls per day, that is 50,000 tokens saved daily — before accounting for any reduction in retry calls caused by hallucinated output.
+</Info>

@@ -1,0 +1,81 @@
+{
+  "projectType": "general",
+  "projectName": "claude-token-efficient",
+  "projectDescription": "A single drop-in CLAUDE.md file that keeps Claude responses terse and reduces output token usage in output-heavy workflows — no code changes required.",
+  "theme": "luma",
+  "primaryColor": "#242b2c",
+  "lightColor": "#6a6a6d",
+  "darkColor": "#ebeaea",
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Documentation",
+        "groups": [
+          {
+            "group": "Get Started",
+            "pages": [
+              "introduction",
+              "quickstart",
+              "when-to-use"
+            ]
+          },
+          {
+            "group": "Profiles",
+            "pages": [
+              "profiles/overview",
+              "profiles/coding",
+              "profiles/agents",
+              "profiles/analysis",
+              "profiles/benchmark"
+            ]
+          },
+          {
+            "group": "Versioned Configs",
+            "pages": [
+              "versioned/overview",
+              "versioned/v5-structured",
+              "versioned/v6-one-shot",
+              "versioned/v8-ultra-lean"
+            ]
+          },
+          {
+            "group": "Results & Benchmarks",
+            "pages": [
+              "benchmarks/results",
+              "benchmarks/at-scale",
+              "benchmarks/before-after"
+            ]
+          },
+          {
+            "group": "Guides",
+            "pages": [
+              "guides/composing-rules",
+              "guides/contributing",
+              "guides/faq"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "keyFeatures": [
+    "Single CLAUDE.md file — drop into any project root, zero setup",
+    "Eliminates sycophantic openers, hollow closings, and unsolicited suggestions",
+    "Removes em dashes, smart quotes, and Unicode that break parsers",
+    "Enforces think-before-acting and targeted edits over full rewrites",
+    "~63% average output token reduction on output-heavy workflows",
+    "Multiple specialized profiles for coding, agents, analysis, and benchmarks",
+    "Versioned configuration sets (v5, v6, v8) optimized for different cost/quality trade-offs",
+    "User instructions always override — never fights explicit requests"
+  ],
+  "publicApiSurface": [
+    "CLAUDE.md — universal base profile",
+    "profiles/CLAUDE.coding.md — coding and code review profile",
+    "profiles/CLAUDE.agents.md — automation pipeline and multi-agent profile",
+    "profiles/CLAUDE.analysis.md — data analysis and reporting profile",
+    "profiles/CLAUDE.benchmark.md — token-to-green benchmark profile",
+    "profiles/J-drona23-v5/ — multi-file structured config (50 tool calls)",
+    "profiles/K-drona23-v6/ — one-shot execution config (50 tool calls)",
+    "profiles/M-drona23-v8/ — ultra-lean minimum-turn config (20 tool calls)"
+  ]
+}

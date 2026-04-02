@@ -1,0 +1,38 @@
+---
+title: "At-Scale Savings"
+description: "Projected token and cost savings when the Universal CLAUDE.md is applied across high-volume, output-heavy workflows."
+---
+
+## Projected Cost Savings at Scale
+
+The table below projects monthly savings based on the ~63% output word reduction measured in the benchmark, applied to output-heavy workflows running on Claude Sonnet pricing.
+
+| Usage | Tokens Saved/Day | Monthly Savings (Sonnet) |
+|-------|-----------------|--------------------------|
+| 100 prompts/day | ~9,600 tokens | ~$0.86 |
+| 1,000 prompts/day | ~96,000 tokens | ~$8.64 |
+| 3 projects combined | ~288,000 tokens | ~$25.92 |
+
+---
+
+## How These Numbers Are Derived
+
+These projections apply the 63% output token reduction from the [benchmark results](/benchmarks/results) to a representative prompt volume. The benchmark measured output savings on response-heavy prompts — explanations, code reviews, concept questions, and corrections. In those scenarios, the model's default verbosity (preambles, hollow closings, unsolicited suggestions) accounts for a large share of total output tokens, and eliminating that verbosity compounds across hundreds of calls per day.
+
+The savings are output-side only. The CLAUDE.md file itself is loaded as input tokens on every message. At high prompt volumes, the output savings significantly exceed that fixed input overhead. At low volumes, the overhead dominates.
+
+---
+
+## When At-Scale Savings Apply
+
+At-scale savings are most relevant for:
+
+- **Automation pipelines with high output volume** — resume bots, agent loops, code generation workflows where the model produces large responses repeatedly
+- **Repeated structured tasks** — any workflow where Claude's default verbosity compounds across hundreds of calls per day
+- **Teams requiring consistent parseable output** — where reduced noise also reduces downstream parsing failures
+
+<Warning>
+  **These projections are estimates based on directional benchmarks.** The 63% reduction was measured on 5 specific prompts with no variance controls or repeated runs. Real-world results depend on your task mix. Prompts that are already terse (short factual queries, single-line commands) will see smaller gains. Prompts that trigger Claude's default verbosity (explanations, reviews, code generation) will see gains closer to the benchmark figures.
+
+  The CLAUDE.md file adds input tokens on every message. For low-volume or casual use — single short queries, infrequent one-off sessions — the persistent input cost is not offset by output savings. In those cases, this file is a net token increase, not a reduction. Best results come from output-heavy repeated tasks: agent pipelines, code generation loops, and automation bots.
+</Warning>

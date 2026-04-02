@@ -1,0 +1,60 @@
+---
+title: 'Profiles overview'
+description: 'Specialized variants of the base CLAUDE.md tuned for different workflows and project types.'
+---
+
+Profiles are drop-in variants of the base `CLAUDE.md` file, each tuned for a specific type of work. Where the base file applies universal rules that work anywhere, profiles add targeted constraints that eliminate waste specific to that workflow.
+
+Every profile extends the base rules. You use one file — you just pick which one fits your project.
+
+## Available profiles
+
+| Profile | Best for |
+|---------|----------|
+| `CLAUDE.md` | Universal - works for any project |
+| `profiles/CLAUDE.benchmark.md` | Token-to-green coding benchmarks |
+| `profiles/CLAUDE.coding.md` | Dev projects, code review, debugging |
+| `profiles/CLAUDE.agents.md` | Automation pipelines, multi-agent systems |
+| `profiles/CLAUDE.analysis.md` | Data analysis, research, reporting |
+
+## How to use a profile
+
+Copy the profile you want to use into your project root as `CLAUDE.md`. Claude Code reads it automatically — no other setup required.
+
+<Steps>
+  <Step title="Clone the repository">
+    ```bash
+    git clone https://github.com/drona23/claude-token-efficient
+    ```
+  </Step>
+  <Step title="Copy the profile to your project">
+    Replace `CLAUDE.coding.md` with whichever profile you want to use.
+    ```bash
+    cp claude-token-efficient/profiles/CLAUDE.coding.md your-project/CLAUDE.md
+    ```
+  </Step>
+  <Step title="Start working">
+    Claude Code picks up the file automatically on the next message. No restart needed.
+  </Step>
+</Steps>
+
+<Note>
+  User instructions always override the profile. If you ask for verbose output or detailed explanation, Claude follows your instruction — the file never fights you.
+</Note>
+
+## Profile detail pages
+
+<CardGroup cols={2}>
+  <Card title="Coding" icon="code" href="/profiles/coding">
+    Rules for dev projects, code review, and debugging. Prioritizes concise code output with no over-engineering.
+  </Card>
+  <Card title="Agents" icon="robot" href="/profiles/agents">
+    Rules for automation pipelines and multi-agent systems. Enforces structured, parseable output and hallucination prevention.
+  </Card>
+  <Card title="Analysis" icon="chart-bar" href="/profiles/analysis">
+    Rules for data analysis, research, and reporting. Enforces accuracy, sourced numbers, and structured report format.
+  </Card>
+  <Card title="Benchmark" icon="gauge" href="/profiles/benchmark">
+    Ultra-lean rules for token-to-green coding benchmarks. Minimizes overhead while preserving pass rate.
+  </Card>
+</CardGroup>

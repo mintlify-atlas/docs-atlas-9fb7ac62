@@ -1,0 +1,60 @@
+---
+title: 'Benchmark profile'
+description: 'Ultra-lean rules for token-to-green coding benchmarks, minimizing overhead while preserving pass rate.'
+---
+
+The benchmark profile is the leanest configuration in this project. Its single goal is to minimize token overhead while keeping the code correct enough to pass tests. It strips away every rule category — output format, formatting constraints, hallucination prevention — and keeps only the handful of behaviors that directly affect cost-to-green on coding benchmarks.
+
+**Best for:** token-to-green coding benchmarks
+
+**Goal:** minimize overhead while preserving pass rate
+
+## Rules
+
+```text
+- Think before acting. Read existing files before writing code.
+- Be concise in output.
+- Prefer editing over rewriting whole files.
+- Do not re-read files you have already read.
+- Test your code before declaring done.
+- No sycophantic openers or closing fluff.
+- Keep solutions simple and direct.
+- Deliver exactly what was requested. No extras.
+- User instructions always override this file.
+```
+
+## How it differs from the base CLAUDE.md
+
+The base `CLAUDE.md` is the universal profile — seven rules covering approach, output, format, and behavior that apply to any project. The benchmark profile shares the same core rules but strips all category structure and trims to the absolute minimum needed to hit a test suite without wasted tokens.
+
+<Tabs>
+  <Tab title="Benchmark profile">
+    Nine lines. No categories. Every rule directly tied to reducing cost on benchmark runs:
+
+    - Reading files before writing prevents expensive backtrack loops
+    - Preferring edits over rewrites reduces output tokens on modifications
+    - Not re-reading already-read files prevents redundant input token spend
+    - No sycophantic openers/fluff removes pure waste on every response
+    - "Deliver exactly what was requested. No extras." prevents speculative additions that don't affect the test result
+  </Tab>
+  <Tab title="Base CLAUDE.md">
+    The universal file adds rules for tone, format, and behavior that are valuable in general use but not specifically tuned for benchmark cost efficiency. On benchmark runs where the only metric is cost-to-green, those rules add overhead without affecting the pass rate.
+  </Tab>
+</Tabs>
+
+## How to activate
+
+<Steps>
+  <Step title="Copy the profile to your benchmark project">
+    ```bash
+    cp claude-token-efficient/profiles/CLAUDE.benchmark.md your-benchmark-project/CLAUDE.md
+    ```
+  </Step>
+  <Step title="Run your benchmark">
+    Claude Code reads `CLAUDE.md` automatically. The profile takes effect on the next message.
+  </Step>
+</Steps>
+
+<Note>
+  This profile was validated against an independent benchmark harness running 3 coding challenges (CSV reporter, SQLite window functions, Hono WebSocket counter). The v8 configuration using this profile's approach won 2 of 3 challenges and beat the previous best overall by 17.4% on total cost.
+</Note>

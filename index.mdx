@@ -1,97 +1,74 @@
 ---
-title: "Introduction"
-description: "Welcome to the new home for your documentation"
+title: "claude-token-efficient"
+description: "One file. Drop it in your project. Keeps Claude responses terse and reduces output tokens on heavy workflows."
 ---
 
-## Setting up
+claude-token-efficient is a single `CLAUDE.md` file you drop into your project root. Claude Code reads it automatically — no code changes, no configuration, no setup. Behavior changes immediately: shorter responses, no sycophantic filler, no unsolicited suggestions, ~63% fewer output tokens on heavy workflows.
 
-Get your documentation site up and running in minutes.
-
-<Card
-  title="Start here"
-  icon="rocket"
-  href="/quickstart"
-  horizontal
->
-  Follow our three step quickstart guide.
-</Card>
-
-## Make it yours
-
-Design a docs site that looks great and empowers your users.
-
-<Columns cols={2}>
-  <Card
-    title="Edit locally"
-    icon="pen-to-square"
-    href="/development"
-  >
-    Edit your docs locally and preview them in real time.
+<CardGroup cols={2}>
+  <Card title="Quick Start" icon="rocket" href="/quickstart">
+    Get up and running in under a minute
   </Card>
-  <Card
-    title="Customize your site"
-    icon="palette"
-    href="/essentials/settings"
-  >
-    Customize the design and colors of your site to match your brand.
+  <Card title="When to Use" icon="circle-check" href="/when-to-use">
+    Understand when this helps vs. when it doesn't
   </Card>
-    <Card
-    title="Set up navigation"
-    icon="map"
-    href="/essentials/navigation"
-  >
-    Organize your docs to help users find what they need and succeed with your product.
+  <Card title="Profiles" icon="sliders" href="/profiles/overview">
+    Pick the profile that fits your workflow
   </Card>
-  <Card
-    title="API documentation"
-    icon="terminal"
-    href="/api-reference/introduction"
-  >
-    Auto-generate API documentation from OpenAPI specifications.
+  <Card title="Benchmark Results" icon="chart-bar" href="/benchmarks/results">
+    See the before/after token reduction data
   </Card>
-</Columns>
+</CardGroup>
 
-## Create beautiful pages
+## The problem
 
-Everything you need to create world-class documentation.
+By default, Claude:
 
-<Columns cols={2}>
-  <Card
-    title="Write with MDX"
-    icon="pen-fancy"
-    href="/essentials/markdown"
-  >
-    Use MDX to style your docs pages.
-  </Card>
-  <Card
-    title="Code samples"
-    icon="code"
-    href="/essentials/code"
-  >
-    Add sample code to demonstrate how to use your product.
-  </Card>
-  <Card
-    title="Images"
-    icon="image"
-    href="/essentials/images"
-  >
-    Display images and other media.
-  </Card>
-  <Card
-    title="Reusable snippets"
-    icon="recycle"
-    href="/essentials/reusable-snippets"
-  >
-    Write once and reuse across your docs.
-  </Card>
-</Columns>
+- Opens every response with "Sure!", "Great question!", "Absolutely!"
+- Ends with "I hope this helps! Let me know if you need anything!"
+- Uses em dashes, smart quotes, and Unicode that break parsers
+- Restates your question before answering it
+- Adds unsolicited suggestions beyond what you asked
+- Over-engineers code with abstractions you never requested
 
-## Need inspiration?
+**All of this wastes tokens. None of it adds value.**
 
-<Card
-  title="See complete examples"
-  icon="stars"
-  href="https://mintlify.com/customers"
->
-  Browse our showcase of exceptional documentation sites.
-</Card>
+## The fix
+
+<Steps>
+  <Step title="Download the file">
+    ```bash
+    curl -o CLAUDE.md https://raw.githubusercontent.com/drona23/claude-token-efficient/main/CLAUDE.md
+    ```
+  </Step>
+  <Step title="Drop it in your project root">
+    ```
+    your-project/
+    └── CLAUDE.md    ← one file, zero setup, no code changes
+    ```
+  </Step>
+  <Step title="Start using Claude Code">
+    Claude reads `CLAUDE.md` automatically. Responses become terse immediately.
+  </Step>
+</Steps>
+
+## What's in this documentation
+
+<CardGroup cols={2}>
+  <Card title="Profiles" icon="layer-group" href="/profiles/overview">
+    Specialized variants for coding, agents, analysis, and benchmarks
+  </Card>
+  <Card title="Versioned Configs" icon="code-branch" href="/versioned/overview">
+    Pre-tuned config sets optimized for cost vs. quality trade-offs
+  </Card>
+  <Card title="Composing Rules" icon="puzzle-piece" href="/guides/composing-rules">
+    Stack global, project-level, and subdirectory CLAUDE.md files
+  </Card>
+  <Card title="Contributing" icon="code-pull-request" href="/guides/contributing">
+    Submit fixes and behavior rules discovered in the wild
+  </Card>
+</CardGroup>
+
+<Note>
+  The `CLAUDE.md` file itself consumes input tokens on every message. Net savings only apply when output volume is high enough to offset the persistent input cost. At low usage, it costs more than it saves. See [When to Use](/when-to-use) for the full trade-off breakdown.
+</Note>

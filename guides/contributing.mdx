@@ -1,0 +1,57 @@
+---
+title: Contributing
+description: How to submit a new behavior fix and get credited in the next release.
+---
+
+Found something Claude does by default that wastes tokens or gets in the way? If a rule in `CLAUDE.md` could fix it, open an issue and share it with the community.
+
+## How to Submit a Fix
+
+<Steps>
+  <Step title="Identify the annoying behavior">
+    Describe exactly what Claude does by default that you want to change. Be specific. "Claude is too verbose" is too vague. "Claude opens every code review with a compliment and closes with an offer to help further" is actionable.
+  </Step>
+
+  <Step title="Share the prompt that triggers it">
+    Paste the prompt or task description that reliably produces the behavior. This lets maintainers reproduce it and verify that a rule fixes it.
+  </Step>
+
+  <Step title="Propose the fix rule">
+    Write the rule you added to your own `CLAUDE.md` that solved the problem. One or two lines is ideal. If the fix requires more than that, explain why.
+
+    Example submission:
+
+    ```
+    Behavior: Claude silently catches exceptions in pipeline steps and
+    continues as if nothing failed.
+
+    Prompt: "Process all files in /data and write results to output.json"
+
+    Fix rule: When a step fails, stop immediately and report the full
+    error with traceback before attempting any fix.
+    ```
+  </Step>
+</Steps>
+
+Open your issue here: [github.com/drona23/claude-token-efficient/issues](https://github.com/drona23/claude-token-efficient/issues)
+
+<Note>
+Community submissions become part of the next version with full credit. Your name and the source issue will be listed in the project's references section.
+</Note>
+
+## References and Credits
+
+This project was built on real complaints from the Claude community. The following sources contributed fixes:
+
+- [GitHub #3382 — "Claude says You're absolutely right about everything"](https://github.com/anthropics/claude-code/issues/3382) — 350+ upvotes
+- [GitHub #14759 — "Sycophantic behavior undermines usefulness as coding assistant"](https://github.com/anthropics/claude-code/issues/14759)
+- [GitHub #9340 — "Add --quiet flag to suppress tool call output"](https://github.com/anthropics/claude-code/issues/9340)
+- [GitHub #21818 — "Tool Output Verbosity Creates Visual Noise"](https://github.com/anthropics/claude-code/issues/21818)
+- [GitHub #20542 — "Verbose output overwhelms session and consumes excessive tokens"](https://github.com/anthropics/claude-code/issues/20542)
+- [The Register — "Claude Code's endless sycophancy annoys customers"](https://www.theregister.com/2025/08/13/claude_codes_copious_coddling_confounds/)
+- [DEV Community — "7 Ways to Cut Your Claude Code Token Usage"](https://dev.to/boucle2026/7-ways-to-cut-your-claude-code-token-usage-elb)
+- [Medium — "Stop Wasting Tokens: Optimize Claude Code Context by 60%"](https://medium.com/@jpranav97/stop-wasting-tokens-how-to-optimize-claude-code-context-by-60-bfad6fd477e5)
+- [Anthropic Docs — Reduce Hallucinations](https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations)
+- [PromptHub — "Three Prompt Engineering Methods to Reduce Hallucinations"](https://www.prompthub.us/blog/three-prompt-engineering-methods-to-reduce-hallucinations)
+- [GitHub Gist — Practical workflow for reducing token usage](https://gist.github.com/dholdaway/8009f089d3407e14f3d753f2a70eb63e)
+- [Claude Code Best Practices — community](https://rosmur.github.io/claudecode-best-practices/)
